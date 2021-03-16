@@ -16,7 +16,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MLFLOW UI endpoints
-app.get("/list-registered-models", async (req, res) => {
+app.get("/deploy-ec2", async (req, res) => {
   let response;
   try {
     const { data } = await axios.get(
@@ -32,46 +32,46 @@ app.get("/list-registered-models", async (req, res) => {
   return res.send(response);
 });
 
-var Docker = require("dockerode");
-const aws = require("aws-sdk");
-const exec = require("child_process").exec;
+// var Docker = require("dockerode");
+// const aws = require("aws-sdk");
+// const exec = require("child_process").exec;
 
-// Deployment endpoints
-app.get("/deploy-docker", async (req, res) => {
-  const { artifactLocation } = req.params;
+// // Deployment endpoints
+// app.get("/deploy-docker", async (req, res) => {
+//   const { artifactLocation } = req.params;
 
-  // execute script
-  const result = await exec("echo 'AMAZING'");
+//   // execute script
+//   const result = await exec("echo 'AMAZING'");
 
-  return res.json({ result });
-});
+//   return res.json({ result });
+// });
 
-app.get("/deploy-ecs", async (req, res) => {
-  return res.json("hi");
-});
+// app.get("/deploy-ecs", async (req, res) => {
+//   return res.json("hi");
+// });
 
-// For the demo
-// MLFLOW MODEL TEST endpoints
-app.post("/test-endpoint", async (req, res) => {
-  const params = req.body;
+// // For the demo
+// // MLFLOW MODEL TEST endpoints
+// app.post("/test-endpoint", async (req, res) => {
+//   const params = req.body;
 
-  let response;
-  try {
-    response = await axios.post(
-      `http://ec2-3-235-5-18.compute-1.amazonaws.com:8080/invocations`,
-      params,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          format: "pandas-split",
-        },
-      }
-    );
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-  return res.json(response.data);
-});
+//   let response;
+//   try {
+//     response = await axios.post(
+//       `http://ec2-3-235-5-18.compute-1.amazonaws.com:8080/invocations`,
+//       params,
+//       {
+//         headers: {
+//           "Content-Type": "application/json",
+//           format: "pandas-split",
+//         },
+//       }
+//     );
+//   } catch (err) {
+//     return res.status(500).send(err);
+//   }
+//   return res.json(response.data);
+// });
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
